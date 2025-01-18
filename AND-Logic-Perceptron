@@ -1,0 +1,47 @@
+import numpy as np
+from jinja2.nodes import Break
+
+
+def step(a):
+    return 1 if a >= 0 else 0
+
+
+and_model = np.array([ [0,0],
+                       [0,1],
+                       [1,0],
+                       [1,1]])
+
+expected_output = [0,0,0,1]
+
+w_1 = -2
+w_2 = 3
+w_0 = 1 ##bias
+x_0 = -1
+n = 1 ##Learning rate
+e = 1
+epoch = 0
+actual_output = []
+w = np.array([w_0, w_1, w_2])  # Initialization
+
+while actual_output != expected_output:
+    epoch += 1
+    actual_output = []
+    print(f"Epoch {epoch}")
+    for i, index in enumerate(and_model):
+        z = w[0] * x_0 + w[1] * index[0] + w[2] * index[1]
+
+        y = step(z)
+        actual_output.append(y)
+        e = expected_output[i]-y
+
+        w[0] = w[0] + n * e * x_0  # Bias update
+        w[1] = w[1] + n * e * index[0]  # w_1 update
+        w[2] = w[2] + n * e * index[1]  # w_2 update
+
+
+        print(f"Resultado para z en {i} es:  {z}")
+        print(f"Resultado para y en {i} es:  {y}")
+        print(f"Resultado para e em {i} es:  {e} \n")
+        print(f"Salida actual: {actual_output} \n")
+
+print(f"El numero total de epocas es: {epoch}")
